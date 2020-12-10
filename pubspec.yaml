@@ -74,3 +74,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Heebo
+      fonts:
+        - asset: assets/fonts/Heebo/static/Heebo-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/Heebo/static/Heebo-Bold.ttf
+          weight: 700
