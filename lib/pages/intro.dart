@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:developer' as developer;
 
+const color1 = "#34b7e8";
+const color2 = "#336cb3";
+
 class Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -90,9 +93,9 @@ Widget playBox() {
           height: 70,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: HexColor("#34b7e8"),
+            color: HexColor(color1),
             boxShadow: [
-              BoxShadow(color: darkerHex("#336cb3"), 
+              BoxShadow(color: HexColor(color2), 
               blurRadius: 10,
               spreadRadius: 10),
             ],
