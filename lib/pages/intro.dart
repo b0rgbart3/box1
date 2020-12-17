@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:developer' as developer;
 
+const color0 = "#63d5ff";
 const color1 = "#34b7e8";
 const color2 = "#336cb3";
 
@@ -14,7 +15,7 @@ class Intro extends StatelessWidget {
         color: Colors.black,
         child: Container(
             alignment: Alignment.topCenter,
-            padding: EdgeInsets.only(top: 300),
+            padding: EdgeInsets.only(top: 150),
             child: Column(children: [titleText(), cross()])));
   }
 
@@ -33,105 +34,103 @@ class Intro extends StatelessWidget {
   Widget cross() {
     return Column(
       children: [
-        tile(),
+        Tile(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            tile(),
-            playBox(),
-            tile()
-          ],
+          children: [Tile(), playBox(), Tile()],
         ),
-        tile()
+        Tile()
       ],
     );
   }
 
-Widget playBox() {
-  return 
-    Stack(
-      alignment: AlignmentDirectional.center,
-    children: [
-    tile(), playText(),
-    ]
+  Widget playText() {
+    return Text("Play",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          decoration: TextDecoration.none,
+          fontFamily: 'Heebo',
+          fontSize: 30,
+          shadows: [
+            Shadow(
+              color: Colors.blue.shade900.withOpacity(1),
+              offset: Offset(0, 0),
+              blurRadius: 15,
+            ),
+          ],
+        ));
+  }
 
+  // Widget box(size) {
+  //   return Container(
+  //         alignment: Alignment.center,
+  //         width: 70,
+  //         height: 70,
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(10),
+  //           color: HexColor(color1),
+  //           boxShadow: [
+  //             BoxShadow(color: HexColor(color2),
+  //             blurRadius: 10,
+  //             spreadRadius: 10),
+  //           ],
+  //         ),
+  //       );
+  // }
 
-  );
-  
 }
 
-  Widget playText() {
-    return Text(
-      "Play",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color:Colors.white,
-        decoration: TextDecoration.none,
-        fontFamily: 'Heebo',
-        fontSize: 30,
-        shadows: [
-              Shadow(
-                color: Colors.blue.shade900.withOpacity(1),
-                offset: Offset(0, 0),
-                blurRadius: 15,
-              ),
-            ],
-      )
-    );
+class PlayText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text("Play",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+          decoration: TextDecoration.none,
+          fontFamily: 'Heebo',
+          fontSize: 30,
+          shadows: [
+            Shadow(
+              color: Colors.blue.shade900.withOpacity(1),
+              offset: Offset(0, 0),
+              blurRadius: 15,
+            ),
+          ],
+        ));
   }
-  Widget tile() {
-    return Padding(
-        padding: EdgeInsets.all(14.0),
-        child: Stack(children:[box(70), box(40)] )
-        );
-  }
+}
 
-  Widget box(size) {
-    return Container(
-          alignment: Alignment.center,
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: HexColor(color1),
-            boxShadow: [
-              BoxShadow(color: HexColor(color2), 
-              blurRadius: 10,
-              spreadRadius: 10),
-            ],
-          ),
-        );
-  }
-
+class Box extends StatelessWidget {
   Color darkerHex(value) {
-
-    developer.log(value, name: 'original hexString');
+    //developer.log(value, name: 'original hexString');
     var newString = value;
-    developer.log(newString, name: 'newString');
+    //developer.log(newString, name: 'newString');
     var nString = value.split('');
-   // developer.log(nString.join(''), name: 'nString');
+    // developer.log(nString.join(''), name: 'nString');
     var red = nString[1] + nString[2];
     var green = nString[3] + nString[4];
     var blue = nString[5] + nString[6];
 
-     developer.log(red, name: 'red');
+    //developer.log(red, name: 'red');
 
-    var redInt = (int.parse(red, radix: 16) ).toInt();
-    var greenInt = (int.parse(green, radix: 16) ).toInt();
-    var blueInt = (int.parse(blue, radix: 16) ).toInt();
-   
-    developer.log(redInt.toString(), name: 'redInt');
+    var redInt = (int.parse(red, radix: 16)).toInt();
+    var greenInt = (int.parse(green, radix: 16)).toInt();
+    var blueInt = (int.parse(blue, radix: 16)).toInt();
+
+    //developer.log(redInt.toString(), name: 'redInt');
 
     redInt = (redInt * .8).toInt();
     greenInt = (greenInt * .8).toInt();
     blueInt = (blueInt * .8).toInt();
 
-    developer.log(redInt.toString(), name: 'redInt');
+    //developer.log(redInt.toString(), name: 'redInt');
     if (redInt < 0) {
       redInt = 0;
     }
 
-   if (greenInt < 0) {
+    if (greenInt < 0) {
       greenInt = 0;
     }
 
@@ -143,10 +142,93 @@ Widget playBox() {
     var greenHex = greenInt.toRadixString(16);
     var blueHex = blueInt.toRadixString(16);
 
-    developer.log(redHex.toString(), name: 'redHex');
+    //developer.log(redHex.toString(), name: 'redHex');
     var hexString = "#" + redHex + greenHex + blueHex;
-  
-    developer.log(hexString, name: 'hexString');
+
+    //developer.log(hexString, name: 'hexString');
     return HexColor(hexString);
   }
+
+  Box(this.boxSize, this.light, this.boxColor);
+  final double boxSize;
+  final bool light;
+  final String boxColor;
+
+  @override
+  Widget build(BuildContext context) {
+    if (light)
+      return Container(
+        alignment: Alignment.center,
+        width: boxSize,
+        height: boxSize,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: HexColor(boxColor),
+          boxShadow: [
+            BoxShadow(
+                color: HexColor(boxColor), blurRadius: 10, spreadRadius: 6),
+          ],
+        ),
+      );
+    else
+      return Container(
+        alignment: Alignment.center,
+        width: boxSize,
+        height: boxSize,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: HexColor(boxColor),
+          boxShadow: [
+            BoxShadow(
+                color: darkerHex(boxColor), blurRadius: 10, spreadRadius: 10),
+          ],
+        ),
+      );
+  }
+}
+
+class Tile extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _TileBox();
+}
+
+class _TileBox extends State<Tile> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(14.0),
+        child: Stack(
+            alignment: Alignment.center,
+            children: [Box(70.0, false, color2), Box(50.0, true, color1)]));
+  }
+}
+
+// We are making the playBox be our interactive element
+// This State override creates an instance of our _PlayButton State Class
+class playBox extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _PlayButton();
+}
+
+class _PlayButton extends State<playBox> {
+  bool pPressed = false;
+  @override
+  Widget build(BuildContext context) {
+
+  developer.log("here");
+  pPressed = false;
+      return GestureDetector(
+          onTap: () {
+           
+              developer.log('make it true');
+              developer.log(pPressed.toString());
+              pPressed = !pPressed;
+          },
+          child: Container(
+              child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [Tile(), PlayText()]))
+                  );
+    }
+  
 }
