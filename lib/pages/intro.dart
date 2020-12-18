@@ -149,6 +149,9 @@ class _TileBox extends State<Tile> {
   bool highlighted;
   String myString;
   bool touchable;
+  num outerBoxSize=70.0;
+  num innerBoxSize=50.0;
+
   @override
   Widget build(BuildContext context) {
     var colorOffset = 0;
@@ -156,13 +159,24 @@ class _TileBox extends State<Tile> {
     if (highlighted) {
       developer.log('highlighted tile');
       colorOffset = 2;
+      outerBoxSize=70.0;
+      innerBoxSize=50.0;
     }
 
 
     developer.log("myString: " + myString);
 
     return GestureDetector( 
-      onTap:() {
+      onTapDown:(tapDownDetails) {
+                if (touchable) {
+            setState(() {
+       outerBoxSize = 65.0;
+       innerBoxSize=45.0;
+            });
+            }
+      },
+      onTapUp:(tapUpDetails) {
+       
         if (touchable) {
             setState(() {
             highlighted = true;
@@ -172,9 +186,14 @@ class _TileBox extends State<Tile> {
       },
       child: Padding(
         padding: EdgeInsets.all(14.0),
-        child: Stack(alignment: Alignment.center, children: [
-          Box(70.0, false, colors[colorOffset + 0], highlighted),
-          Box(50.0, true, colors[colorOffset + 1], highlighted),
+        child: Container( 
+          width: 70.0,
+          height: 70.0,
+          child:Stack(alignment: Alignment.center, 
+        
+        children: [
+          Box(outerBoxSize, false, colors[colorOffset + 0], highlighted),
+          Box(innerBoxSize, true, colors[colorOffset + 1], highlighted),
           Text(myString,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -190,7 +209,10 @@ class _TileBox extends State<Tile> {
                   ),
                 ],
               )),
-        ])));
+        ])
+        )
+        )
+        );
   }
 
     void playGame() async {
