@@ -4,8 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'dart:developer' as developer;
 
 const color0 = "#63d5ff";
-const color1 = "#34b7e8";
-const color2 = "#336cb3";
+const colors = ["#336cb3", "#34b7e8", "#44b7e8", "#54b7e8"];
 
 class Intro extends StatelessWidget {
   @override
@@ -34,75 +33,24 @@ class Intro extends StatelessWidget {
   Widget cross() {
     return Column(
       children: [
-        Tile(),
+        Tile(false, "", false),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Tile(), playBox(), Tile()],
+          children: [Tile(false, "", false), Tile(false, "Play", true), Tile(false, "",false)],
         ),
-        Tile()
+        Tile(false, "",false)
       ],
     );
-  }
-
-  Widget playText() {
-    return Text("Play",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          decoration: TextDecoration.none,
-          fontFamily: 'Heebo',
-          fontSize: 30,
-          shadows: [
-            Shadow(
-              color: Colors.blue.shade900.withOpacity(1),
-              offset: Offset(0, 0),
-              blurRadius: 15,
-            ),
-          ],
-        ));
-  }
-
-  // Widget box(size) {
-  //   return Container(
-  //         alignment: Alignment.center,
-  //         width: 70,
-  //         height: 70,
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(10),
-  //           color: HexColor(color1),
-  //           boxShadow: [
-  //             BoxShadow(color: HexColor(color2),
-  //             blurRadius: 10,
-  //             spreadRadius: 10),
-  //           ],
-  //         ),
-  //       );
-  // }
-
-}
-
-class PlayText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text("Play",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          decoration: TextDecoration.none,
-          fontFamily: 'Heebo',
-          fontSize: 30,
-          shadows: [
-            Shadow(
-              color: Colors.blue.shade900.withOpacity(1),
-              offset: Offset(0, 0),
-              blurRadius: 15,
-            ),
-          ],
-        ));
   }
 }
 
 class Box extends StatelessWidget {
+
+  // darkerHex -- takes in a String that is a hexadecimal color value as a string
+  // takes the RGB values as double char hex values - converts that to an inteber
+  // then darkens it by .2% and then converts it back to a 2 char hex value
+  // and then returns the new Color - based on the new hexadecimal string
+
   Color darkerHex(value) {
     //developer.log(value, name: 'original hexString');
     var newString = value;
@@ -149,86 +97,97 @@ class Box extends StatelessWidget {
     return HexColor(hexString);
   }
 
-  Box(this.boxSize, this.light, this.boxColor);
+  Box(this.boxSize, this.light, this.boxColor, this.highlighted);
   final double boxSize;
   final bool light;
   final String boxColor;
+  final bool highlighted;
+  double boxSpreadRadius = 10.0;
+  Color mainColor;
+  Color glowColor;
 
   @override
   Widget build(BuildContext context) {
-    if (light)
+     Color mainColor = HexColor(boxColor);
+     Color glowColor = darkerHex(boxColor);
+     
+    if (light) {
+      boxSpreadRadius = 6.0;
+      glowColor = mainColor;
+      
+    }
       return Container(
         alignment: Alignment.center,
         width: boxSize,
         height: boxSize,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: HexColor(boxColor),
+          color: mainColor,
           boxShadow: [
             BoxShadow(
-                color: HexColor(boxColor), blurRadius: 10, spreadRadius: 6),
+                color: glowColor, blurRadius: 10, spreadRadius: boxSpreadRadius),
           ],
         ),
       );
-    else
-      return Container(
-        alignment: Alignment.center,
-        width: boxSize,
-        height: boxSize,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: HexColor(boxColor),
-          boxShadow: [
-            BoxShadow(
-                color: darkerHex(boxColor), blurRadius: 10, spreadRadius: 10),
-          ],
-        ),
-      );
+   
   }
 }
 
 class Tile extends StatefulWidget {
+  Tile(this.highlighted, this.myString, this.touchable);
+  bool highlighted;
+  String myString;
+  bool touchable;
+
   @override
-  State<StatefulWidget> createState() => _TileBox();
+  State<StatefulWidget> createState() => _TileBox(highlighted, this.myString, this.touchable);
 }
 
 class _TileBox extends State<Tile> {
+  _TileBox(this.highlighted, this.myString, this.touchable);
+  bool highlighted;
+  String myString;
+  bool touchable;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(14.0),
-        child: Stack(
-            alignment: Alignment.center,
-            children: [Box(70.0, false, color2), Box(50.0, true, color1)]));
-  }
-}
+    var colorOffset = 0;
 
-// We are making the playBox be our interactive element
-// This State override creates an instance of our _PlayButton State Class
-class playBox extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _PlayButton();
-}
-
-class _PlayButton extends State<playBox> {
-  bool pPressed = false;
-  @override
-  Widget build(BuildContext context) {
-
-  developer.log("here");
-  pPressed = false;
-      return GestureDetector(
-          onTap: () {
-           
-              developer.log('make it true');
-              developer.log(pPressed.toString());
-              pPressed = !pPressed;
-          },
-          child: Container(
-              child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [Tile(), PlayText()]))
-                  );
+    if (highlighted) {
+      developer.log('highlighted tile');
+      colorOffset = 2;
     }
-  
+
+
+    developer.log("myString: " + myString);
+
+    return GestureDetector( 
+      onTap:() {
+        if (touchable) {
+            setState(() {
+            highlighted = true;
+          });
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.all(14.0),
+        child: Stack(alignment: Alignment.center, children: [
+          Box(70.0, false, colors[colorOffset + 0], highlighted),
+          Box(50.0, true, colors[colorOffset + 1], highlighted),
+          Text(myString,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                decoration: TextDecoration.none,
+                fontFamily: 'Heebo',
+                fontSize: 30,
+                shadows: [
+                  Shadow(
+                    color: Colors.blue.shade900.withOpacity(1),
+                    offset: Offset(0, 0),
+                    blurRadius: 15,
+                  ),
+                ],
+              )),
+        ])));
+  }
 }
