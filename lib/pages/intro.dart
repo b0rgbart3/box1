@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:developer' as developer;
+import 'package:box1/pages/game.dart';
 
 const color0 = "#63d5ff";
 const colors = ["#336cb3", "#34b7e8", "#44b7e8", "#54b7e8"];
@@ -165,6 +166,7 @@ class _TileBox extends State<Tile> {
         if (touchable) {
             setState(() {
             highlighted = true;
+            playGame();
           });
         }
       },
@@ -190,4 +192,15 @@ class _TileBox extends State<Tile> {
               )),
         ])));
   }
+
+    void playGame() async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Game())).then((value) => setState(() {
+          highlighted = false;
+        }));
+
+
+
+  }
+
 }
