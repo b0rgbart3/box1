@@ -22,6 +22,8 @@ environment:
 
 dependencies:
   hexcolor: ^1.0.6
+  simple_animations: any
+  supercharged: any
   flutter:
     sdk: flutter
 
