@@ -9,9 +9,9 @@ import 'package:box1/classes/colorset.dart';
 class Intro extends StatelessWidget {
 
   // Color introColor = Colors.blue;
-  colorset introColorSet = colorset(colorset.colorssets['red']);
+  colorset introColorSet = colorset(colorset.colorssets['blue']);
 
-
+  num startTileSize = 70.0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +42,16 @@ class Intro extends StatelessWidget {
   Widget cross() {
     return Column(
       children: [
-        Tile(introColorSet, false, "", false),
+        Tile(introColorSet, false, "", false, startTileSize),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Tile(introColorSet, false, "", false),
-            Tile(introColorSet, false, "Play", true),
-            Tile(introColorSet, false, "", false)
+            Tile(introColorSet, false, "", false, startTileSize),
+            Tile(introColorSet, false, "Play", true, startTileSize),
+            Tile(introColorSet, false, "", false, startTileSize)
           ],
         ),
-        Tile(introColorSet, false, "", false)
+        Tile(introColorSet, false, "", false, startTileSize)
       ],
     );
   }

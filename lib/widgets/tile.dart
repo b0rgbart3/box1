@@ -5,67 +5,63 @@ import 'package:box1/pages/game.dart';
 import 'package:box1/widgets/box.dart';
 import 'package:box1/classes/colorset.dart';
 
-
 class Tile extends StatefulWidget {
-  Tile(this.tileColor, this.highlighted, this.myString, this.touchable);
+  Tile(this.tileColor, this.highlighted, this.myString, this.touchable, this.size);
   colorset tileColor; 
   bool highlighted;
   String myString;
   bool touchable;
+  num size;
 
   @override
   State<StatefulWidget> createState() =>
-      _TileBox(tileColor, highlighted, myString, touchable);
+      _TileBox(tileColor, highlighted, myString, touchable, size);
 }
 
 class _TileBox extends State<Tile> {
-  _TileBox(this.tileColor, this.highlighted, this.myString, this.touchable);
+  _TileBox(this.tileColor, this.highlighted, this.myString, this.touchable, this.size);
   colorset tileColor;
   bool highlighted;
   String myString;
   bool touchable;
-  num innerBoxSize = 50.0;
-  num outerBoxSize = 70.0;
+  num size;
+  num boxSize;
   String insideColor, outsideColor;
 
+
+  // Set the initial size of the box - to the value that was passed in
+  @override initState() {
+      boxSize = size;
+    }
 
   @override
   Widget build(BuildContext context) {
     
     // Convert the pased Color value into a hexadecimal string so we can 
     // manipulate it.
-
     // String myHexColor = baseColor.value.toRadixString(16);
 
-    var colorOffset = 0;
     insideColor = tileColor.inside;
     outsideColor = tileColor.outside;
 
     if (highlighted) {
-      developer.log('highlighted tile');
-      colorOffset = 2;
-      outerBoxSize = 70.0;
-      innerBoxSize = 70.0;
+      boxSize = size;
       insideColor = tileColor.insideHi;
       outsideColor = tileColor.outsideHi;
     }
-
-    developer.log("myString: " + myString);
 
     return GestureDetector(
         onTapDown: (tapDownDetails) {
           if (touchable) {
             setState(() {
-              outerBoxSize = outerBoxSize*.8;
-              innerBoxSize = innerBoxSize*.8;
+              boxSize = size*.8;
             });
           }
         },
         onTapCancel: () {
           if (touchable) {
             setState(() {
-              outerBoxSize = 70.0;
-              innerBoxSize = 50.0;
+              boxSize = size;
             });
           }
         },
@@ -73,7 +69,6 @@ class _TileBox extends State<Tile> {
           if (touchable) {
             setState(() {
               highlighted = true;
-              outerBoxSize = 0;
               playGame();
             });
           }
@@ -81,16 +76,16 @@ class _TileBox extends State<Tile> {
         child: Padding(
             padding: EdgeInsets.all(14.0),
             child: TweenAnimationBuilder(
-                tween: Tween(begin: 0.0, end: outerBoxSize),
+                tween: Tween(begin: 0.0, end: boxSize),
                 duration: Duration(milliseconds: 100),
                 builder: (_, num myWidth, __) {
                   return Container(
-                      width: 70.0,
-                      height: 70.0,
+                      width: size,
+                      height: size,
                       child: Stack(alignment: Alignment.center, children: [
                         Box(myWidth, false, outsideColor,  
                             highlighted),
-                        Box(myWidth * .7, true, insideColor,
+                        Box(myWidth * .75, true, insideColor,
                             highlighted),
                         boxText(myString),
                       ]));
