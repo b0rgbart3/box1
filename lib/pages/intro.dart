@@ -3,10 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'dart:developer' as developer;
 import 'package:box1/widgets/tile.dart';
+import 'package:box1/classes/colorset.dart';
+
 
 class Intro extends StatelessWidget {
+
+  // Color introColor = Colors.blue;
+  colorset introColorSet = colorset(colorset.colorssets['red']);
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    // developer.log("ColorSet: " + introColorSet.outside);
+
     return Container(
         alignment: Alignment.topCenter,
         color: Colors.black,
@@ -31,16 +42,16 @@ class Intro extends StatelessWidget {
   Widget cross() {
     return Column(
       children: [
-        Tile(false, "", false),
+        Tile(introColorSet, false, "", false),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Tile(false, "", false),
-            Tile(false, "Play", true),
-            Tile(false, "", false)
+            Tile(introColorSet, false, "", false),
+            Tile(introColorSet, false, "Play", true),
+            Tile(introColorSet, false, "", false)
           ],
         ),
-        Tile(false, "", false)
+        Tile(introColorSet, false, "", false)
       ],
     );
   }

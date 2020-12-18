@@ -3,39 +3,51 @@ import 'package:hexcolor/hexcolor.dart';
 import 'dart:developer' as developer;
 import 'package:box1/pages/game.dart';
 import 'package:box1/widgets/box.dart';
-
-const color0 = "#63d5ff";
-const colors = ["#336cb3", "#34b7e8", "#44b7e8", "#54b7e8"];
+import 'package:box1/classes/colorset.dart';
 
 
 class Tile extends StatefulWidget {
-  Tile(this.highlighted, this.myString, this.touchable);
+  Tile(this.tileColor, this.highlighted, this.myString, this.touchable);
+  colorset tileColor; 
   bool highlighted;
   String myString;
   bool touchable;
 
   @override
   State<StatefulWidget> createState() =>
-      _TileBox(highlighted, this.myString, this.touchable);
+      _TileBox(tileColor, highlighted, myString, touchable);
 }
 
 class _TileBox extends State<Tile> {
-  _TileBox(this.highlighted, this.myString, this.touchable);
+  _TileBox(this.tileColor, this.highlighted, this.myString, this.touchable);
+  colorset tileColor;
   bool highlighted;
   String myString;
   bool touchable;
-  num outerBoxSize = 70.0;
   num innerBoxSize = 50.0;
+  num outerBoxSize = 70.0;
+  String insideColor, outsideColor;
+
 
   @override
   Widget build(BuildContext context) {
+    
+    // Convert the pased Color value into a hexadecimal string so we can 
+    // manipulate it.
+
+    // String myHexColor = baseColor.value.toRadixString(16);
+
     var colorOffset = 0;
+    insideColor = tileColor.inside;
+    outsideColor = tileColor.outside;
 
     if (highlighted) {
       developer.log('highlighted tile');
       colorOffset = 2;
       outerBoxSize = 70.0;
       innerBoxSize = 70.0;
+      insideColor = tileColor.insideHi;
+      outsideColor = tileColor.outsideHi;
     }
 
     developer.log("myString: " + myString);
@@ -76,9 +88,9 @@ class _TileBox extends State<Tile> {
                       width: 70.0,
                       height: 70.0,
                       child: Stack(alignment: Alignment.center, children: [
-                        Box(myWidth, false, colors[colorOffset + 0],
+                        Box(myWidth, false, outsideColor,  
                             highlighted),
-                        Box(myWidth * .7, true, colors[colorOffset + 1],
+                        Box(myWidth * .7, true, insideColor,
                             highlighted),
                         boxText(myString),
                       ]));
