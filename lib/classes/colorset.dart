@@ -11,6 +11,8 @@ class colorset {
                      "red": ["#cf1f25", "#ff1d58","#ff5a7c","#ff8888"]
                    };
 
+// Our Constructor
+
   colorset( this.set ) {
     outside = set[0];
     inside = set[1];

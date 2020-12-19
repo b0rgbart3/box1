@@ -5,6 +5,7 @@ import 'package:box1/pages/game.dart';
 import 'package:box1/widgets/box.dart';
 import 'package:box1/classes/colorset.dart';
 
+// Color, highlighted, string, touchable, size
 class Tile extends StatefulWidget {
   Tile(this.tileColor, this.highlighted, this.myString, this.touchable, this.size);
   colorset tileColor; 
@@ -49,6 +50,7 @@ class _TileBox extends State<Tile> {
       insideColor = tileColor.insideHi;
       outsideColor = tileColor.outsideHi;
     }
+    developer.log("In Tile: tileSize: " + size.toString());
 
     return GestureDetector(
         onTapDown: (tapDownDetails) {
@@ -74,7 +76,7 @@ class _TileBox extends State<Tile> {
           }
         },
         child: Padding(
-            padding: EdgeInsets.all(14.0),
+            padding: EdgeInsets.all(8),
             child: TweenAnimationBuilder(
                 tween: Tween(begin: 0.0, end: boxSize),
                 duration: Duration(milliseconds: 100),
