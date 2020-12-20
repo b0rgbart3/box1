@@ -7,26 +7,34 @@ import 'package:box1/classes/colorset.dart';
 
 // Color, highlighted, string, touchable, size
 class Tile extends StatefulWidget {
-  Tile(this.tileColor, this.highlighted, this.myString, this.touchable, this.size);
+  Tile(this.tileColor, this.onState, this.myString, 
+  this.touchable, this.size, this.myID, this.touchMe);
   colorset tileColor; 
-  bool highlighted;
+  bool onState;
   String myString;
   bool touchable;
   num size;
+  Object myID;
+  Function touchMe;
 
   @override
   State<StatefulWidget> createState() =>
-      _TileBox(tileColor, highlighted, myString, touchable, size);
+      _TileBox(tileColor, onState, myString, touchable, size, myID, touchMe);
 }
 
 class _TileBox extends State<Tile> {
-  _TileBox(this.tileColor, this.highlighted, this.myString, this.touchable, this.size);
+  _TileBox(this.tileColor, this.onState, this.myString, this.touchable, 
+  this.size, this.myID, this.touchMe);
   colorset tileColor;
-  bool highlighted;
+  bool onState;
   String myString;
   bool touchable;
   num size;
+  Object myID;
   num boxSize;
+  Function touchMe;
+  bool highlighted = false;
+
   String insideColor, outsideColor;
 
 
@@ -49,6 +57,11 @@ class _TileBox extends State<Tile> {
       boxSize = size;
       insideColor = tileColor.insideHi;
       outsideColor = tileColor.outsideHi;
+    } else {
+      if (onState == false) {
+        insideColor = tileColor.insideOff;
+        outsideColor = tileColor.outsideOff;
+      }
     }
     developer.log("In Tile: tileSize: " + size.toString());
 
@@ -71,7 +84,13 @@ class _TileBox extends State<Tile> {
           if (touchable) {
             setState(() {
               highlighted = true;
-              playGame();
+              onState = true;
+          
+              if (touchMe != null) { touchMe(myID); }
+              else { playGame(); }
+              // If touchMe is null that means we are on the intro screen
+              // so in that case we want to "start the game play".
+
             });
           }
         },

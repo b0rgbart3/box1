@@ -40,18 +40,19 @@ class Intro extends StatelessWidget {
   }
 
   Widget cross() {
+    var fakeID = { 0, 0 };
     return Column(
       children: [
-        Tile(introColorSet, false, "", false, startTileSize),
+        Tile(introColorSet, true, "", false, startTileSize, fakeID, null),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Tile(introColorSet, false, "", false, startTileSize),
-            Tile(introColorSet, false, "Play", true, startTileSize),
-            Tile(introColorSet, false, "", false, startTileSize)
+            Tile(introColorSet, true, "", false, startTileSize, fakeID, null),
+            Tile(introColorSet, true, "Play", true, startTileSize, fakeID, null),
+            Tile(introColorSet, true, "", false, startTileSize, fakeID, null)
           ],
         ),
-        Tile(introColorSet, false, "", false, startTileSize)
+        Tile(introColorSet, true, "", false, startTileSize, fakeID, null)
       ],
     );
   }

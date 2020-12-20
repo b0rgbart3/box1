@@ -60,7 +60,7 @@ class Box extends StatelessWidget {
   final bool light;
   final String boxColor;
   final bool highlighted;
-  double boxSpreadRadius = 10.0;
+  double boxSpreadRadius = 5.0;
   Color mainColor;
   Color glowColor;
 
@@ -68,6 +68,7 @@ class Box extends StatelessWidget {
   Widget build(BuildContext context) {
     Color mainColor = HexColor(boxColor);
     Color glowColor = darkerHex(boxColor);
+    
 
     if (light) {
       boxSpreadRadius = 6.0;
@@ -80,10 +81,10 @@ class Box extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: mainColor,
-        boxShadow: [
-          BoxShadow(
-              color: glowColor, blurRadius: 10, spreadRadius: boxSpreadRadius),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //       color: glowColor, blurRadius: 5, spreadRadius: boxSpreadRadius),
+        // ],
       ),
     );
   }
