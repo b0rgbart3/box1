@@ -5,6 +5,7 @@ import 'package:box1/pages/game.dart';
 import 'package:box1/widgets/box.dart';
 import 'package:box1/classes/colorset.dart';
 
+
 // Color, highlighted, string, touchable, size
 class Tile extends StatefulWidget {
   Tile(this.tileColor, this.onState, this.myString, 
@@ -17,9 +18,12 @@ class Tile extends StatefulWidget {
   Object myID;
   Function touchMe;
 
+
   @override
   State<StatefulWidget> createState() =>
       _TileBox(tileColor, onState, myString, touchable, size, myID, touchMe);
+
+  
 }
 
 class _TileBox extends State<Tile> {
@@ -36,14 +40,7 @@ class _TileBox extends State<Tile> {
   bool highlighted = false;
 
   String insideColor, outsideColor;
-
-    toggleMyself() {
-      onState = !onState;
-      developer.log("toggle:" + onState.toString());
-      highlighted = false;
-      boxSize = size;
-    }
-
+  
   // Set the initial size of the box - to the value that was passed in
   @override initState() {
       boxSize = size;
@@ -52,6 +49,18 @@ class _TileBox extends State<Tile> {
   @override
   Widget build(BuildContext context) {
     
+    void toggleMyself( aTile ) {
+      setState(() {
+            onState = !onState;
+    developer.log("toggle:" + onState.toString());
+        // aTile.highlighted = false;
+    // aTile.boxSize = size;
+      });
+
+
+  }
+
+
     // Convert the pased Color value into a hexadecimal string so we can 
     // manipulate it.
     // String myHexColor = baseColor.value.toRadixString(16);
@@ -148,4 +157,8 @@ class _TileBox extends State<Tile> {
               highlighted = false;
             }));
   }
+
+
+  
+
 }
