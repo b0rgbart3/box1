@@ -37,6 +37,12 @@ class _TileBox extends State<Tile> {
 
   String insideColor, outsideColor;
 
+    toggleMyself() {
+      onState = !onState;
+      developer.log("toggle:" + onState.toString());
+      highlighted = false;
+      boxSize = size;
+    }
 
   // Set the initial size of the box - to the value that was passed in
   @override initState() {
@@ -63,7 +69,9 @@ class _TileBox extends State<Tile> {
         outsideColor = tileColor.outsideOff;
       }
     }
-    developer.log("In Tile: tileSize: " + size.toString());
+
+
+    // developer.log("In Tile: tileSize: " + size.toString());
 
     return GestureDetector(
         onTapDown: (tapDownDetails) {
@@ -84,9 +92,13 @@ class _TileBox extends State<Tile> {
           if (touchable) {
             setState(() {
               highlighted = true;
-              onState = true;
+              
           
-              if (touchMe != null) { touchMe(myID); }
+              if (touchMe != null) { 
+                   touchMe(this);
+                   // developer.log('about to call toggle');
+                   // toggleMyself();
+               }
               else { playGame(); }
               // If touchMe is null that means we are on the intro screen
               // so in that case we want to "start the game play".

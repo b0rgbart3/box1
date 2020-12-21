@@ -13,8 +13,9 @@ class board {
   double boardWidth;
   double boardHeight;
   int sequenceLength = 10;
-  List sequence = [];
-  List boardModel = [];
+  List sequence = [];  // the sequence of tile IDs that got "touched"
+  List boardModel = [];  // on/off states of the board
+  List boardTiles = [];  // handles to the tile objects
 
   generateRandomSequence() {
   
@@ -48,7 +49,7 @@ class board {
       generateRandomSequence();
       createEmptyBoardModel();
       sequence.forEach( (pair) => {
-        touchTile(pair)
+        touchTileByID(pair)
       }
       
       );
@@ -57,8 +58,8 @@ class board {
   
   toggleTile(myID) {
       var index = myID["row"] * tileCount + myID["col"];
-      developer.log('row: ' + myID['row'].toString() + ', col: ' + myID['col'].toString());
-      developer.log('index: ' + index.toString());
+     // developer.log('row: ' + myID['row'].toString() + ', col: ' + myID['col'].toString());
+     // developer.log('index: ' + index.toString());
 
     // Toggle the Tile
     if (boardModel[index] == false) {
@@ -69,12 +70,10 @@ class board {
       boardModel[index] = false;
     }
   }
-  // This is a call-back function for when a tile gets touched
-  // so that the board can handle the data-model.
 
-  touchTile(myID) {
-    // Toggle the touched tile
+  touchTileByID(myID) {
      toggleTile(myID);
+    // developer.log('touched: ' + myID.toString());
 
     // Toggle the Surrounding Tiles
     var above = {};
@@ -86,24 +85,55 @@ class board {
     if (myID["row"] > 0) {
       above = { "row": myID["row"]-1, "col": myID["col"]};
       toggleTile(above);
+      var index = above["row"] * tileCount + above["col"];
+      developer.log("index: " + index.toString());
+      developer.log("length: " + boardTiles.length.toString());
+      //developer.log("tile:" + boardTiles[index].toString());
+      developer.log(boardTiles.toString());
+      developer.log(index.toString());
+      // if (boardTiles!= null) {
+      // if (boardTiles[index]) {
+      //  boardTiles[index].toggleMyself();
+      // }
+      // }
+      //boardTiles[index].toggleMyself();
+      //developer.log('above: ' + above.toString());
     } 
 
     // Below
     if (myID["row"] < tileCount-1) {
       below = { "row": myID["row"] +1, "col":myID["col"]};
       toggleTile(below);
+      var index = below["row"] * tileCount + below["col"];
+     //  developer.log("index: " + index.toString());
+      //boardTiles[index].toggleMyself();
+     // developer.log('below: ' + below.toString());
     } 
 
     if (myID["col"] > 0) {
       left = { "row": myID["row"], "col": myID["col"] -1 };
       toggleTile(left);
+      var index = left["row"] * tileCount + left["col"];
+      // developer.log("index: " + index.toString());
+      //boardTiles[index].toggleMyself();
     } 
 
     if (myID["col"] < tileCount-1) {
       right = {"row": myID["row"], "col": myID["col"] + 1};
       toggleTile(right);
+      var index = right["row"] * tileCount + right["col"];
+      // developer.log("index: " + index.toString());
+      //boardTiles[index].toggleMyself();
     } 
+    }
+  // This is a call-back function for when a tile gets touched
+  // so that the board can handle the data-model.
 
+  touchTile(tile) {
+    developer.log("Touch Tile got called:" + tile.myID.toString());
+    touchTileByID(tile.myID);
+    tile.toggleMyself();
+    
   }
 
   produceRow( rowNum ) {
@@ -112,9 +142,13 @@ class board {
       // Color, highlighted, string, touchable, size
       var myID = {"row": rowNum, "col": i};
       var myIndex = rowNum * tileCount + i;
+      var tileHandle = Tile(boardColor, boardModel[myIndex], "", true, tileSize, myID, touchTile);
+
       thisRow.add(
-        Tile(boardColor, boardModel[myIndex], "", true, tileSize, myID, touchTile)
+        tileHandle
       );
+      boardTiles.add(tileHandle);
+      //developer.log("boardTiles: " + boardTiles.toString());
     }
 
     return Row(
